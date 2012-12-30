@@ -1,0 +1,31 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+//    apply plugin: 'idea'
+
+group = 'org.riderzen.mgs'
+
+sourceCompatibility = '1.6'
+targetCompatibility = '1.6'
+
+jar.enabled = true
+compileJava.options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+
+repositories {
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'http://clojars.org/repo' }
+    maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
+    mavenCentral()
+}
+
+dependencies {
+
+    compile "org.codehaus.groovy:groovy:$groovyVsn"
+    compile "org.codehaus.groovy:groovy-sql:$groovyVsn"
+
+    compile "org.msgpack:msgpack:$msgpackVsn"
+    compile "org.slf4j:slf4j-log4j12:$slf4jVsn"
+    compile "log4j:log4j:$log4jVsn"
+    compile "com.google.code.gson:gson:$gsonVsn"
+
+    testCompile "junit:junit:$junitVsn"
+}
