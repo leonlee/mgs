@@ -2,24 +2,27 @@ apply plugin: 'java'
 apply plugin: 'groovy'
 //    apply plugin: 'idea'
 
-group = 'org.riderzen.mgs'
+group = 'org.fun.mgs'
 
 sourceCompatibility = '1.6'
 targetCompatibility = '1.6'
 
 jar.enabled = true
-compileJava.options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+//compileJava.options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 
 repositories {
+    mavenCentral()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url 'http://clojars.org/repo' }
     maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
-    mavenCentral()
 }
 
 dependencies {
+    compile "com.typesafe.akka:akka-actor_2.10:$akkaVsn"
+    compile "com.typesafe.akka:akka-kernel_2.10:$akkaVsn"
+    compile "com.typesafe.akka:akka-testkit_2.10:$akkaVsn"
 
-    compile "org.codehaus.groovy:groovy:$groovyVsn"
+    groovy "org.codehaus.groovy:groovy:$groovyVsn"
     compile "org.codehaus.groovy:groovy-sql:$groovyVsn"
 
     compile "org.msgpack:msgpack:$msgpackVsn"
@@ -28,4 +31,23 @@ dependencies {
     compile "com.google.code.gson:gson:$gsonVsn"
 
     testCompile "junit:junit:$junitVsn"
+}
+
+task copyDeps << {
+        def allDeps = []
+        def sources = ['runtime', 'compile', 'providedRuntime', 'providedCompile']
+        configurations.asMap.each {k, v->
+            if (k in sources) {
+                allDeps.addAll v.allDependencies
+            }
+        }
+        copy{
+            from allDeps.collect { dep->
+                if (!(dep instanceof org.gradle.api.artifacts.ProjectDependency)) {//exclude project deps
+                    return configurations.compile.files (dep)
+                }
+                return[]
+            }
+            into "${rootProject.projectDir}/build/deps"
+        }
 }
