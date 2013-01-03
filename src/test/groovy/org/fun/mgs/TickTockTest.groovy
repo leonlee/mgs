@@ -3,6 +3,7 @@ package org.fun.mgs
 import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.testkit.TestActorRef
+import org.fun.mgs.lab.TickTock
 import org.junit.Test
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration

@@ -1,60 +1,48 @@
+/*
+ * Copyright (c) 2013. FunLaiLe Inc. <http://www.funlaile.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.fun.mgs
 
 import akka.actor.ActorRef
 import akka.actor.ActorSystem
 import akka.actor.Props
-import akka.actor.UntypedActor
 import akka.event.Logging
 import akka.event.LoggingAdapter
 import akka.kernel.Bootable
+import com.typesafe.config.ConfigFactory
+
+import static org.fun.mgs.Constant.*
 
 public class Bootstrap implements Bootable {
-    final ActorSystem system = ActorSystem.create("hellokernel");
-
-    static class HelloActor extends UntypedActor {
-        LoggingAdapter log = Logging.getLogger(context.system(), this)
-        final ActorRef worldActor = context.actorOf(new Props(WorldActor.class));
-
-        public void onReceive(Object message) {
-            switch (message) {
-                case "start":
-                    log.info("received start")
-                    worldActor.tell("Hello", self)
-                    break
-                case String:
-                case GString:
-                    log.info("received $message")
-                    println "Received message $message"
-                    break
-                    log.info("received gstring")
-                    break
-                default:
-                    log.info("unknown $message")
-                    unhandled(message)
-            }
-        }
-    }
-
-    static class WorldActor extends UntypedActor {
-        LoggingAdapter log = Logging.getLogger(context.system(), this)
-        public void onReceive(Object message) {
-            switch (message) {
-                case String:
-                    log.info("received string $message")
-                    sender.tell("${message.toUpperCase()} world !", self)
-                    break
-                default:
-                    log.info("unknown message ${message}")
-                    unhandled(message)
-            }
-        }
-    }
+    final static ActorSystem system = ActorSystem.create("mgs",
+            ConfigFactory.load().getConfig("MgsSys"))
+    final static LoggingAdapter log = Logging.getLogger(system)
 
     public void startup() {
-        system.actorOf(new Props(HelloActor.class)).tell("start", null);
+        log.info("MGS is starting...")
+
+        ActorRef gameSup = system.actorOf(new Props(GameSupervisor.class), GAME_SUPERVISOR)
+
+        log.info("MGS was started successfully")
     }
 
     public void shutdown() {
-        system.shutdown();
+        log.info("MGS is stopping")
+
+        system.shutdown()
+
+        log.info("MGS was stopped")
     }
 }

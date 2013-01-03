@@ -21,6 +21,7 @@ dependencies {
     compile "com.typesafe.akka:akka-actor_2.10:$akkaVsn"
     compile "com.typesafe.akka:akka-kernel_2.10:$akkaVsn"
     compile "com.typesafe.akka:akka-testkit_2.10:$akkaVsn"
+    compile "com.typesafe.akka:akka-zeromq_2.10:$akkaVsn"
 
     groovy "org.codehaus.groovy:groovy:$groovyVsn"
     compile "org.codehaus.groovy:groovy-sql:$groovyVsn"
@@ -31,6 +32,9 @@ dependencies {
     compile "com.google.code.gson:gson:$gsonVsn"
 
     testCompile "junit:junit:$junitVsn"
+    testRuntime files('e:\\opt\\ZeroMQ 3.2.2\\bin')
+    testRuntime files('e:\\opt\\ZeroMQ 3.2.2\\lib')
+    testRuntime files('e:\\opt\\ZeroMQ 3.2.2\\include')
 }
 
 task copyDeps << {

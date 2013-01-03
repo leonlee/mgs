@@ -18,10 +18,14 @@ package org.fun.mgs
 import akka.actor.*
 import akka.event.Logging
 import akka.event.LoggingAdapter
-import akka.testkit.TestActorRef
 import akka.testkit.TestKit
 import akka.testkit.TestProbe
 import com.typesafe.config.ConfigFactory
+import org.fun.mgs.lab.BoomActor
+import org.fun.mgs.lab.EchoActor
+import org.fun.mgs.lab.ForwardingActor
+import org.fun.mgs.lab.SequencingActor
+import org.fun.mgs.lab.SupervisorActor
 import org.junit.Test
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
