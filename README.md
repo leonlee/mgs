@@ -1,4 +1,4 @@
-mgs
+MGS
 ===
 
 MMO Game Server
