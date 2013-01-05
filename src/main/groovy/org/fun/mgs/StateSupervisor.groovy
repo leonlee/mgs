@@ -22,7 +22,7 @@ import akka.actor.UntypedActor
  * User: Leon Lee <mail.lgq@gmail.com>
  * Date: 13-1-1
  */
-class PlayerSupervisor extends UntypedActor{
+class StateSupervisor extends UntypedActor{
     @Override
     SupervisorStrategy supervisorStrategy() {
         return super.supervisorStrategy()

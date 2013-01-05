@@ -22,6 +22,8 @@ import akka.event.Logging
 import akka.event.LoggingAdapter
 import akka.kernel.Bootable
 import com.typesafe.config.ConfigFactory
+import org.fun.mgs.server.HttpServer
+import org.slf4j.bridge.SLF4JBridgeHandler
 
 import static org.fun.mgs.Constant.*
 
@@ -33,6 +35,8 @@ public class Bootstrap implements Bootable {
     public void startup() {
         log.info("MGS is starting...")
 
+        initLogging()
+        HttpServer.startup()
         ActorRef gameSup = system.actorOf(new Props(GameSupervisor.class), GAME_SUPERVISOR)
 
         log.info("MGS was started successfully")
@@ -44,5 +48,10 @@ public class Bootstrap implements Bootable {
         system.shutdown()
 
         log.info("MGS was stopped")
+    }
+
+    def initLogging() {
+        SLF4JBridgeHandler.removeHandlersForRootLogger()
+        SLF4JBridgeHandler.install()
     }
 }
