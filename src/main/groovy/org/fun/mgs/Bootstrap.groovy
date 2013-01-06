@@ -15,29 +15,23 @@
 
 package org.fun.mgs
 
-import akka.actor.ActorRef
-import akka.actor.ActorSystem
-import akka.actor.Props
-import akka.event.Logging
-import akka.event.LoggingAdapter
 import akka.kernel.Bootable
-import com.typesafe.config.ConfigFactory
 import org.fun.mgs.server.HttpServer
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.slf4j.bridge.SLF4JBridgeHandler
 
-import static org.fun.mgs.Constant.*
+import static org.fun.mgs.RootContainer.getSystem
 
 public class Bootstrap implements Bootable {
-    final static ActorSystem system = ActorSystem.create("mgs",
-            ConfigFactory.load().getConfig("MgsSys"))
-    final static LoggingAdapter log = Logging.getLogger(system)
+    private Logger log = LoggerFactory.getLogger(Bootstrap.class)
 
     public void startup() {
         log.info("MGS is starting...")
 
         initLogging()
+        RootContainer.init()
         HttpServer.startup()
-        ActorRef gameSup = system.actorOf(new Props(GameSupervisor.class), GAME_SUPERVISOR)
 
         log.info("MGS was started successfully")
     }

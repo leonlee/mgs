@@ -13,19 +13,42 @@
  * limitations under the License.
  */
 
-package org.fun.mgs
+package org.fun.mgs.sup
 
+import akka.actor.ActorRef
+import akka.actor.Props
 import akka.actor.SupervisorStrategy
 import akka.actor.UntypedActor
+import akka.event.Logging
+import akka.event.LoggingAdapter
+import org.fun.mgs.RootContainer
+
+import static org.fun.mgs.Constant.*
 
 /**
  * User: Leon Lee <mail.lgq@gmail.com>
  * Date: 13-1-1
  */
-class ServiceSupervisor extends UntypedActor{
+class RootSupervisor extends UntypedActor {
+    private static final SupervisorStrategy strategy = new RootStrategy()
+
+    private LoggingAdapter log = Logging.getLogger(RootContainer.system)
+
+    ActorRef service;
+    ActorRef state;
+
+    RootSupervisor() {
+        log.debug("initializing game supervisor...")
+
+        service = context.actorOf(new Props(ServiceSupervisor.class), SERVICE_SUPERVISOR)
+        state = context.actorOf(new Props(StateSupervisor.class), STATE_SUPERVISOR)
+
+        log.debug("game supervisor was initialized")
+    }
+
     @Override
     SupervisorStrategy supervisorStrategy() {
-        return super.supervisorStrategy()
+        return strategy
     }
 
     @Override

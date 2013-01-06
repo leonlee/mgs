@@ -20,7 +20,7 @@ package org.fun.mgs
  * Date: 13-1-1
  */
 class Constant {
-    final static String GAME_SUPERVISOR = 'gameSupervisor'
-    final static String SERVICE_SUPERVISOR = 'serviceSupervisor'
-    final static String PLAYER_SUPERVISOR = 'playerSupervisor'
+    final static String ROOT_SUPERVISOR = 'root'
+    final static String SERVICE_SUPERVISOR = 'service'
+    final static String STATE_SUPERVISOR = 'state'
 }

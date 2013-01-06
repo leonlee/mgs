@@ -15,7 +15,7 @@ import static org.fun.mgs.common.Tool.conf
  * Date: 13-1-4
  */
 class HttpServer {
-    static final org.slf4j.Logger logger = LoggerFactory.getLogger(HttpServer.class)
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(HttpServer.class)
 
     static def startup() {
         logger.info("starting http server...")
